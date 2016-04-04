@@ -3,7 +3,7 @@ var srt = require('srt-stream-parser');
 var fs = require('fs');
 
 if (!process.argv.slice(2)[0]) {
-  console.log("Error: Please indicate the input file");
+  console.log("Error: Please indicate an input file");
   process.exit();
 }
 
@@ -34,7 +34,7 @@ srt_file.pipe(srt()).on('data', function(data) {
      
   for(var i = 0; i < subtitles_in.length; i++) {
     var output_array = [];
-    var input_array = subtitles_in[i].dialogs[0].split('');
+    var input_array = process_subtitle_dialogs(subtitles_in,i);
 
     //console.log(input_array.join(''));
 
@@ -106,6 +106,21 @@ function pad(number, size) {
   number = number.toString();
   while (number.length < size) number = "0" + number;
   return number;
+}
+
+function process_subtitle_dialogs(subtitles_in,i) {
+  var return_array = [];
+  if (subtitles_in[i].dialogs.length > 1) {
+    for(var j = 0; j < subtitles_in[i].dialogs.length - 1; j++) {
+      subtitles_in[i].dialogs[j] = subtitles_in[i].dialogs[j] + '\n';
+    }
+    var string = subtitles_in[i].dialogs.join();
+    return_array = string.split(',');
+  } else {
+    return_array = subtitles_in[i].dialogs[0].split('');
+  }
+
+  return return_array;
 }
 
 
