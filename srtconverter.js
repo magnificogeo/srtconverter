@@ -31,12 +31,10 @@ srt_file.pipe(srt()).on('data', function(data) {
     var data = JSON.parse(data);
     subtitles_in.push(data);
 }).on('end', function () {
-     
+
   for(var i = 0; i < subtitles_in.length; i++) {
     var output_array = [];
     var input_array = process_subtitle_dialogs(subtitles_in,i);
-
-    //console.log(input_array.join(''));
 
     while(input_array.length > 0) {
       
@@ -114,8 +112,8 @@ function process_subtitle_dialogs(subtitles_in,i) {
     for(var j = 0; j < subtitles_in[i].dialogs.length - 1; j++) {
       subtitles_in[i].dialogs[j] = subtitles_in[i].dialogs[j] + '\n';
     }
-    var string = subtitles_in[i].dialogs.join();
-    return_array = string.split(',');
+    var string = subtitles_in[i].dialogs.join('');
+    return_array = string.split('');
   } else {
     return_array = subtitles_in[i].dialogs[0].split('');
   }
