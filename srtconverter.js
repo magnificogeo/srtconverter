@@ -108,6 +108,7 @@ function pad(number, size) {
 
 function process_subtitle_dialogs(subtitles_in,i) {
   var return_array = [];
+  var j = i - 1;
   if (subtitles_in[i].dialogs.length > 1) {
     for(var j = 0; j < subtitles_in[i].dialogs.length - 1; j++) {
       subtitles_in[i].dialogs[j] = subtitles_in[i].dialogs[j] + '\n';
@@ -115,7 +116,17 @@ function process_subtitle_dialogs(subtitles_in,i) {
     var string = subtitles_in[i].dialogs.join('');
     return_array = string.split('');
   } else {
-    return_array = subtitles_in[i].dialogs[0].split('');
+    if (subtitles_in[i].dialogs[0] != undefined) {
+      if (j > 0 && parseInt(subtitles_in[i].id) != parseInt(subtitles_in[j].id) + 1) {
+        console.log("error after index " + Number(parseInt(subtitles_in[j].id)));
+        subtitles_in[i].id = parseInt(subtitles_in[j].id) + 1
+        console.log("fixing error... index " + subtitles_in[i].id + " added");
+      }
+      return_array = subtitles_in[i].dialogs[0].split('');
+    } else {
+      return_array = ["error"];
+      console.log("there was an error. search for the word error");
+    }
   }
 
   return return_array;
